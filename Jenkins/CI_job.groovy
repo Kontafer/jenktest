@@ -1,5 +1,5 @@
 def CONTAINER_NAME = "cicd"
-def CONTAINER_TAG = ''
+def CONTAINER_TAG = 'latest'
 def DOCKER_HUB_USER = "kontafer"
 def APP_HTTP_PORT = "5050"
 def IMAGE_NAME = ''
@@ -16,15 +16,9 @@ node {
 	}
 	
 	stage('Build') {
-        	CONTAINER_TAG = sh(returnStdout: true, script: "git describe --tags 2>/dev/null").trim()
-        	echo "Build tag: $CONTAINER_TAG"
-        if (CONTAINER_TAG == '') {
-	        currentBuild.result = 'FAILED'
-			sh "exit 1"
-		}
  		IMAGE_NAME = DOCKER_HUB_USER + "/" + CONTAINER_NAME + ":" + CONTAINER_TAG
-			sh "docker build -t $IMAGE_NAME --pull --no-cache ."
-			echo "Image $IMAGE_NAME build complete"
+		sh "docker build -t $IMAGE_NAME --pull --no-cache ."
+		echo "Image $IMAGE_NAME build complete"
 	}
 
 	stage('Unit tests'){
