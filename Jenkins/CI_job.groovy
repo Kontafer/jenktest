@@ -17,7 +17,7 @@ node {
 	
 	stage('Buildddd') {
  		IMAGE_NAME = DOCKER_HUB_USER + "/" + CONTAINER_NAME + ":" + CONTAINER_TAG
-		sh "docker build -t $IMAGE_NAME --pull --no-cache ."
+		sh "docker build -t $CONTAINER_NAME:$CONTAINER_TAG -t $CONTAINER_NAME --pull --no-cache ."
 		echo "Image $IMAGE_NAME build complete"
 	}
 
