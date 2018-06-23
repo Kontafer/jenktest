@@ -15,7 +15,7 @@ node {
 		checkout scm
 	}
 	
-	stage('Build') {
+	stage('Buildddd') {
  		IMAGE_NAME = DOCKER_HUB_USER + "/" + CONTAINER_NAME + ":" + CONTAINER_TAG
 		sh "docker build -t $IMAGE_NAME --pull --no-cache ."
 		echo "Image $IMAGE_NAME build complete"
