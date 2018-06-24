@@ -34,7 +34,7 @@ node {
 	stage('Push to dockerhub') {
 		withCredentials([usernamePassword(credentialsId: 'dockerHubAccount', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
 			sh "docker login -u $DOCKER_HUB_USER -p $PASSWORD"
-			sh "docker tag $CONTAINER_NAME:$CONTAINER_TAG $DOCKER_HUB_USER/$CONTAINER_NAME:$CONTAINER_TAG"
+			sh "docker tag $DOCKER_HUB_USER/$CONTAINER_NAME $DOCKER_HUB_USER/$DOCKER_HUB_USER/$CONTAINER_NAME"
 			sh "docker push $DOCKER_HUB_USER/$CONTAINER_NAME:$CONTAINER_TAG"
 			echo "Image $IMAGE_NAME push complete"
 		}
