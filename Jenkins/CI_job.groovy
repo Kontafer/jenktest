@@ -25,7 +25,7 @@ node {
 		sh "docker run -d --rm -p $APP_HTTP_PORT:$APP_HTTP_PORT --name $CONTAINER_NAME $IMAGE_NAME"
 		sleep 5
 		status = sh(returnStdout: true, script: "docker inspect $CONTAINER_NAME --format='{{.State.Status}}'").trim()
-		if (status.compareTO('running')) {
+		if (status != 'running') {
 			currentBuild.result = 'FAILED'
 			sh "exit ${status}"
 		} 
