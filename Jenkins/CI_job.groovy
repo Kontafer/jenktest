@@ -21,7 +21,8 @@ node {
 		echo "Image $IMAGE_NAME build complete"
 	}
 
-	stage('Unit tests'){
+	stage('Unit tests') {
+		sleep 5
 		status = sh(returnStdout: true, script: "docker inspect $CONTAINER_NAME --format='{{.State.Status}}'").trim()
 		if (statis.compareTO('running')) {
 			currentBuild.result = 'FAILED'
