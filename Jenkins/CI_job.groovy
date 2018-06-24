@@ -37,10 +37,6 @@ node {
 			sh "docker tag $CONTAINER_NAME:$CONTAINER_TAG $IMAGE_NAME"
 			sh "docker push $IMAGE_NAME"
 			echo "Image $IMAGE_NAME push complete"
-#			IMAGE_NAME_LATEST = DOCKER_HUB_USER + "/" + CONTAINER_NAME + ":latest"
-#			sh "docker tag $CONTAINER_NAME:$CONTAINER_TAG $IMAGE_NAME_LATEST"
-#			sh "docker push $IMAGE_NAME_LATEST"
-#			echo "Image $IMAGE_NAME_LATEST update complete"
 		}
 	}
 }		
