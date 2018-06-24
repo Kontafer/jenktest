@@ -21,18 +21,21 @@ node {
 		echo "Image $IMAGE_NAME build complete"
 	}
 
+
+
+
+
+docker inspect cicd --format='{{.State.Status}}'
+
+
+
 	stage('Unit tests'){
-		sh "docker run -d --rm -p $APP_HTTP_PORT:$APP_HTTP_PORT --name $CONTAINER_NAME $IMAGE_NAME"
-        sleep 5
-        APP_IP_ADDR = sh(returnStdout: true, script: "docker inspect $CONTAINER_NAME --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'")
-        APP_IP_ADDR = APP_IP_ADDR.trim()
-        status = sh(returnStatus: true, script: "curl --silent --connect-timeout 15 --show-error --fail http://$APP_IP_ADDR:$APP_HTTP_PORT")
-        sh(returnStatus: true, script: "echo http://$APP_IP_ADDR:$APP_HTTP_PORT")
-        if (status != 0) {
-            currentBuild.result = 'FAILED'
-            sh "exit ${status}"
-        }
-    }
+		status = sh(returnStdout: true, script: "docker inspect $CONTAINER_NAME --format='{{.State.Status}}'").trim()
+		if (statis.compareTO('running')) {
+			currentBuild.result = 'FAILED'
+			sh "exit ${status}"
+		} 
+	}
 
 	stage('Push to dockerhub') {
 		withCredentials([usernamePassword(credentialsId: 'dockerHubAccount', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
