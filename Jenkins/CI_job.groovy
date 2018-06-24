@@ -21,14 +21,6 @@ node {
 		echo "Image $IMAGE_NAME build complete"
 	}
 
-
-
-
-
-docker inspect cicd --format='{{.State.Status}}'
-
-
-
 	stage('Unit tests'){
 		status = sh(returnStdout: true, script: "docker inspect $CONTAINER_NAME --format='{{.State.Status}}'").trim()
 		if (statis.compareTO('running')) {
