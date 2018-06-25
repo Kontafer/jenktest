@@ -17,8 +17,11 @@ node {
 	
 	stage('Buildingg') {
  		
-		$CONTAINER_TAG = sh(returnStdout: true, script: "git describe --tags").trim()		
-	
+		CONTAINER_TAG = sh(returnStdout: true, script: "git describe --tags").trim()		
+		if (CONTAINER_TAG == '') {
+			currentBuild.result = 'FAILED'
+			sh "exit 1"
+		}
 		IMAGE_NAME = DOCKER_HUB_USER + "/" + CONTAINER_NAME + ":" + CONTAINER_TAG
 		sh "docker build -t $DOCKER_HUB_USER/$CONTAINER_NAME:$CONTAINER_TAG --pull --no-cache ."
 		echo "Image $IMAGE_NAME build complete"
