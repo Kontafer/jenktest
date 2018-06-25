@@ -15,7 +15,7 @@ node {
 		checkout scm
 	}
 	
-	stage('Building') {
+	stage('Buildinggg') {
  		$CONTAINER_TAG = sh(returnStdout: true, script: "git describe --tags 2>/dev/null").trim
 		if ($CONTAINER_TAG == '') {
 			currentBuild.result = 'FAILED'
