@@ -8,4 +8,9 @@ node {
 		def dockerHome = tool 'myDocker'
 		env.PATH = "${dockerHome}/bin:${env.PATH}"
 	}
+
+	stage('Stop working image")
+		sleep 5
+		sh "docker stop $CONTAINER_NAME"
+
 }
