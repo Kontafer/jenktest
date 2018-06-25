@@ -1,4 +1,5 @@
 def CONTAINER_NAME = "cicd"
+def DOCKER_HUB_USER = "kontafer"
 def APP_HTTP_PORT = "80"
 def HOST = "local"
 
@@ -8,27 +9,18 @@ node {
 		env.PATH = "${dockerHome}/bin:${env.PATH}"
 	}
 
-	stage('Checkout') {
-		deleteDir()
-		checkout scm
-	}
+    stage('Stop image') {
+        try {
+            sh "docker stop $CONTAINER_NAME"
+            } catch (error) { 
+        }
+    }
 
-	stage('Deploy') {
-		echo "Deploy tag: ${env.IMAGE_TAG}"
-		ansiblePlaybook colorized: true,
-		limit: "${HOST}",
-		credentialsId: 'ssh-key-jenkins',
-		installation: 'ansible',
-		inventory: 'ansible/hosts',
-		playbook: 'ansible/playbook.yml',
-		vaultCredentialsId: 'ansible_vault_credentials' 
-	}
-
-	stage('Acceptance tests') {
-		exitCode = sh(returnStatus: true, script: "curl --silent --connect-timeout 15 --show-error --fail http://$HOST:$APP_HTTP_PORT")
-		if (exitCode !=0 ) {
-			currentBuild.result = 'FAILED'
-			sh "exit ${exitCode}"
-		}
-	}
+    stage('Add from docker hub') {
+			IMAGE_NAME = DOCKER_HUB_USER + "/" + CONTAINER_NAME + ":" + env.PARAM_GIT
+			sh "docker pull $IMAGE_NAME"
+			sh "docker run -d --rm -p $APP_HTTP_PORT:$APP_HTTP_PORT --name $CONTAINER_NAME docker.io/$IMAGE_NAME"          
+        }
+        echo "Image $IMAGE_NAME:${env.PARAM_GIT} was run successfully"
+    }
 }
