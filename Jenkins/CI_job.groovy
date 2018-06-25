@@ -1,5 +1,5 @@
 def CONTAINER_NAME = "cicd"
-def CONTAINER_TAG = 'latest2'
+def CONTAINER_TAG = ''
 def DOCKER_HUB_USER = "kontafer"
 def APP_HTTP_PORT = "5050"
 def IMAGE_NAME = ''
@@ -15,8 +15,13 @@ node {
 		checkout scm
 	}
 	
-	stage('Buildddd') {
- 		IMAGE_NAME = DOCKER_HUB_USER + "/" + CONTAINER_NAME + ":" + CONTAINER_TAG
+	stage('Building') {
+ 		$CONTAINER_TAG = sh(returnStdout: true, script: "git describe --tags 2>/dev/null").trim
+		if ($CONTAINER_TAG == '') {
+			currentBuild.result = 'FAILED'
+			sh "exit 1"
+		}
+		IMAGE_NAME = DOCKER_HUB_USER + "/" + CONTAINER_NAME + ":" + CONTAINER_TAG
 		sh "docker build -t $DOCKER_HUB_USER/$CONTAINER_NAME:$CONTAINER_TAG --pull --no-cache ."
 		echo "Image $IMAGE_NAME build complete"
 	}
