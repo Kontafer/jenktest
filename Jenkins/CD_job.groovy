@@ -11,6 +11,5 @@ node {
 
 	stage('Stop working image') {
 		sleep 5
-		sh "docker stop $CONTAINER_NAME"
 	}
 }
