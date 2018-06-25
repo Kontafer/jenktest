@@ -15,9 +15,9 @@ node {
 	}
 	
 	stage('Take and run Image from DockerHub') {
-		IMAGE_NAME = DOCKER_HUB_USER + "/" + CONTAINER_NAME + ":" + {env.CONTAINER_TAG} 
-		sh "docker pull $IMAGE_NAME"
-		sh "docker run -d --rm -p $APP_HTTP_PORT:$APP_HTTP_PORT --name $CONTAINER_NAME docker.io/$IMAGE_NAME}"
+		IMAGE_NAME = DOCKER_HUB_USER + "/" + CONTAINER_NAME 
+		sh "docker pull $IMAGE_NAME:${env.CONTAINER_TAG}"
+		sh "docker run -d --rm -p $APP_HTTP_PORT:$APP_HTTP_PORT --name $CONTAINER_NAME docker.io/$IMAGE_NAME:${env.CONTAINER_TAG}"
 	}
 
 	stage('Integration tests') {
