@@ -7,7 +7,7 @@ pipelineJob("CI_Job") {
 			scm {
 				git {
 					remote {
-						url("https://github.com/Kontafer/students-project-2018.git")
+						url("https://github.com/Kontafer/jenktest")
 						credentials("jenkins-github")
 					}
 					branch("refs/tags/*")
@@ -23,8 +23,8 @@ pipelineJob("CD_job") {
 	upstream('CI_job')
     }
     parameters {
-	gitParam('PARAM_GIT') {
-	    description('Select version of image')
+	gitParam('CONTAINER_TAG') {
+	    description('Select tag of image')
 	    type('TAG')
 	    sortMode('DESCENDING_SMART')
 	    defaultValue('latest')
@@ -35,7 +35,7 @@ pipelineJob("CD_job") {
             scm {
                 git {
                     remote {
-                        url("https://github.com/Kontafer/students-project-2018.git")
+                        url("https://github.com/Kontafer/jenktest")
                         credentials("jenkins-github")
                     }
                     branch("refs/tags/*")
