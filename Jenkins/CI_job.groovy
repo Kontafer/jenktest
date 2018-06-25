@@ -17,15 +17,7 @@ node {
 	
 	stage('Buildingg') {
  		
-	commit = getCommit()
-    if (commit) {
-    	desc = sh(script: "git describe --tags ${commit}", returnStdout: true)?.trim()
-		if (isTag(desc)) {
-			return desc
-			$CONTAINER_TAG = desc
-        }
-    }
-    return null
+		$CONTAINER_TAG = sh(returnStdout: true, script: "git describe --tags").trim()		
 	
 		IMAGE_NAME = DOCKER_HUB_USER + "/" + CONTAINER_NAME + ":" + CONTAINER_TAG
 		sh "docker build -t $DOCKER_HUB_USER/$CONTAINER_NAME:$CONTAINER_TAG --pull --no-cache ."
