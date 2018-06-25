@@ -1,6 +1,6 @@
 def CONTAINER_NAME = "cicd"
 def DOCKER_HUB_USER = "kontafer"
-def APP_HTTP_PORT = "5050"
+def APP_HTTP_PORT = "5000"
 def HOST = "local"
 
 node {
