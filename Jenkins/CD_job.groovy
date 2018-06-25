@@ -16,7 +16,7 @@ node {
         }
     }
 
-    stage('Add from docker hub') {
+    stage('Add from Docker Hub') {
 			IMAGE_NAME = DOCKER_HUB_USER + "/" + CONTAINER_NAME + ":" + env.PARAM_GIT
 			sh "docker pull $IMAGE_NAME"
 			sh "docker run -d --rm -p $APP_HTTP_PORT:$APP_HTTP_PORT --name $CONTAINER_NAME docker.io/$IMAGE_NAME"          
