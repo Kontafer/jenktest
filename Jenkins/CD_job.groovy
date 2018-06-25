@@ -15,6 +15,6 @@ node {
 	}
 	
 	stage('Take and run Image from DockerHub') {
-		sh "docker pull $DOCKER_HUB_USER/$CONTAINER_NAME${env.CONTAINER_TAG}"
+		sh "docker pull $DOCKER_HUB_USER/$CONTAINER_NAME:${env.CONTAINER_TAG}"
 	}
 }
