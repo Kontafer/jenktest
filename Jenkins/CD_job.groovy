@@ -14,7 +14,7 @@ node {
 		sh "docker stop $CONTAINER_NAME"
 	}
 	
-	stage('Take and run image from DockerHub') {
-		sh "docker pull $DOCKER_HUB_USER/$CONTAINER_NAME:$env.CONTAINER_TAG"
+	stage('Take and run Image from DockerHub') {
+		sh "docker pull $DOCKER_HUB_USER/$CONTAINER_NAME${env.CONTAINER_TAG}"
 	}
 }
