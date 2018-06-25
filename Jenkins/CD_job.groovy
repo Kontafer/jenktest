@@ -9,7 +9,5 @@ node {
 		env.PATH = "${dockerHome}/bin:${env.PATH}"
 	}
 
-	stage('Stop working image') {
-		sleep 5
-	}
+
 }
