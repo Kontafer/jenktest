@@ -15,7 +15,18 @@ node {
 	}
 	
 	stage('Take and run Image from DockerHub') {
-		sh "docker pull $DOCKER_HUB_USER/$CONTAINER_NAME:${env.CONTAINER_TAG}"
-		sh "docker run -d --rm -p $APP_HTTP_PORT:$APP_HTTP_PORT --name $CONTAINER_NAME docker.io/$DOCKER_HUB_USER/$CONTAINER_NAME:${env.CONTAINER_TAG}"
+		IMAGE_NAME = DOCKER_HUB_USER + "/" + CONTAINER_NAME + ":" + {env.CONTAINER_TAG} 
+		sh "docker pull $IMAGE_NAME"
+		sh "docker run -d --rm -p $APP_HTTP_PORT:$APP_HTTP_PORT --name $CONTAINER_NAME docker.io/$IMAGE_NAME}"
 	}
+
+	stage('Integration tests') {
+		sleep 5
+		status = sh(returnStdout: true, script: "docker inspect $CONTAINER_NAME --format='{{.State.Status}}'").trim()
+		if (status != 'running') {
+			currentBuild.result = 'FAILED'
+			sh "exit ${status}"
+		}
+	}
+
 }
