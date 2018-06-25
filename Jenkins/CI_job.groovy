@@ -15,12 +15,18 @@ node {
 		checkout scm
 	}
 	
-	stage('Buildinggg') {
- 		$CONTAINER_TAG = sh(returnStdout: true, script: "git describe --tags 2>/dev/null").trim
-		if ($CONTAINER_TAG == '') {
-			currentBuild.result = 'FAILED'
-			sh "exit 1"
-		}
+	stage('Buildingg') {
+ 		
+	commit = getCommit()
+    if (commit) {
+    	desc = sh(script: "git describe --tags ${commit}", returnStdout: true)?.trim()
+		if (isTag(desc)) {
+			return desc
+			$CONTAINER_TAG = desc
+        }
+    }
+    return null
+	
 		IMAGE_NAME = DOCKER_HUB_USER + "/" + CONTAINER_NAME + ":" + CONTAINER_TAG
 		sh "docker build -t $DOCKER_HUB_USER/$CONTAINER_NAME:$CONTAINER_TAG --pull --no-cache ."
 		echo "Image $IMAGE_NAME build complete"
